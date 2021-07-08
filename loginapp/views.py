@@ -67,5 +67,5 @@ class ListTicketView(generic.TemplateView):
             context['matchs'] = get_list_or_404(Ticket, user=self.kwargs['pk'])
         except:
             context['no_match'] ='no match'
-        context['total_tickets'] = Ticket.objects.all().count()        
+        context['total_tickets'] = Ticket.objects.filter(user=self.kwargs['pk']).count()        
         return context
