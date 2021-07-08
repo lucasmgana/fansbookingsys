@@ -13,7 +13,7 @@
         <h3 class="d-flex justify-content-between align-items-center">
 Tickets<span class="badge badge-success badge-pill">{{total_tickets}}</span> </h3>
         <div class="alert alert-success text-center border border-0 border-light" role="alert">
-          Hi {{request.user.email}}!! {% if matchs %} These are your ticket(s)
+          Hi {{request.user.fanprofile.full_name}}!! {% if matchs %} These are your ticket(s)
 
 </div>
         <table class="table w-100 text-white"> 
