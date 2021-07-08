@@ -1,0 +1,6 @@
+body {
+    background-image: url("../assets/img/bridge.jpg");
+    background-repeat: none;
+    background-size: cover;
+    opacity: 0.9;
+}

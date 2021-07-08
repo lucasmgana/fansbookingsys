@@ -1,0 +1,22 @@
+
+
+body {
+    background-image: url("../assets/img/noucamp.jpg");
+    background-repeat: none;
+    background-size: cover;
+    background-color: red;
+    opacity: 0.9;
+}
+
+body .bd::before {    
+      content: "";
+      background-image: url("{% static 'assets/img/noucamp.jpg' %}");              
+      background-size: cover;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      left: 0px;
+      opacity: 0.2;
+      background-color: rgba(0,0,0,0.25);
+}

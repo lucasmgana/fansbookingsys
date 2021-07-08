@@ -1,0 +1,8 @@
+
+body { 
+    background-color: #051937; 
+    color: #DEF5F3; 
+    background-image: url("../../static/assets/img/bridge.jpg");
+    background-repeat: none;
+    background-size: cover;
+    opacity: 0.9;} body nav { background-color: #00C6BF; color: #F7F9FF; } div .jumbotron { background-color: #007789; margin-top: 1em; }

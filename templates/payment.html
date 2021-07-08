@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block stylesheet %}
+<link href="{% static 'css/payment.css' %}" rel="stylesheet">
+{% endblock stylesheet %}
+{% block content %}
+
+{% include 'navbar.html' %}
+        <div class="container offset-3">
+            <div class="alert alert-success text-center shadow-sm border border-0 border-light" role="alert">
+                Payment Successfull ! Ready to save your ticket.
+</div>
+        </div>
+        <!-- Bootstrap core JavaScript
+    ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <center> 
+            <button type="button" class="btn btn-secondary">Download</button>
+        </center>
+        
+        {% endblock content %}

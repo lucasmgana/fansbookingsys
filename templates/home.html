@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block stylesheet %}
+<link href="{% static 'css/home.css' %}" rel="stylesheet">
+{% endblock stylesheet %}
+{% block content %}
+
+{% include 'navbar.html' %}
+        <div class="container mt-5 text-white">
+            <div class="jumbotron shadow-sm mt-5 text-white">
+                <h3 class="d-flex justify-content-between align-items-center">
+        Trending Match <span class="badge badge-success badge-pill">{{total_match}}</span> </h3>
+                <div class="alert alert-success text-center border border-0 border-light" role="alert">
+                    Get a ticket for your match today !!
+</div>
+                <table class="table w-100 text-white"> 
+                    <thead> 
+                        <tr> 
+                            <th>S/N</th> 
+                            <th>Match</th> 
+                            <th>Stadium</th> 
+                            <th>DateTime</th> 
+                            <th>Choose</th> 
+                        </tr>                         
+                    </thead>                     
+                    <tbody>
+                        {% for match in matchs %} 
+                        <tr> 
+                            <th scope="row">{{match.id}}</th> 
+                            <td>{{match.home_team}} Vs {{match.away_team}}</td> 
+                            <td>{{match.stadium}}</td> 
+                            <td>{{match.date}}</td> 
+                            <td> 
+                                {% if request.user.fanprofile.status == 'BURNED' %}
+                                    <p class="text-danger">you are not allowed </p>
+                                {% else %}
+                                    <a class="btn btn-lg btn-info float-right shadow-sm border border-0 border-light" href="{% url 'loginapp:ticket' match.id %}" type="submit" role="button">Get ticket</a>
+                                {% endif %}
+                                </td>                             
+                        </tr> 
+                        
+                        {% endfor %}
+                                              
+                    </tbody>                     
+                </table>
+                
+            </div>
+        </div>
+        {% endblock content %}

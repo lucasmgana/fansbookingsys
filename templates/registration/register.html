@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block stylesheet %}
+<link href="{% static 'css/register.css' %}" rel="stylesheet">
+{% endblock stylesheet %}
+{% block content %}
+
+    <body class="text-center offset-3">
+        <div class="container mt-4">
+            <div class="col-md-6 border-0 border-light mt-5 pt-5 col-lg-7">
+                <div class="card mb-4 shadow-sm bg-white mt-3 border-0 border-light" style="border-radius: 4px;">
+                    <form class="bg-white w-auto h-100 border-light border-0 mb-5 ml-3 mr-3 pr-null pb-null pl-5 pr-5 mt-4" method="POST">
+                        {% csrf_token %}
+                        <div class="alert alert-light text-center text-body font-weight-bold text-decoration-none bg-white mt-n4 mb-2" role="alert" style="font-family: verdana, sans serif; font-size: 22px;">Register&nbsp;</div>
+                        <div class="form-group">
+                            <input type="text" name="fname" class="form-control mt-3 ml-auto mr-auto p-auto mb-3 w-100" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="First Name"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="lname" class="form-control mt-3 mb-3" placeholder="Sir Name"/>
+                            <input type="text" name="{{form.email.html_name}}" class="form-control mt-3 mb-3" placeholder="Username"/>
+                            <select name="clubs" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+                               {% if teams %}
+                                <option selected="">Choose...</option>
+
+                                {% for team in teams %}
+                                <option value="{{team.name}}">{{team.name.capitalize}}</option>
+                                {% endfor %}
+{% else %}
+<option>No team available</option>
+
+{% endif %}
+                            </select>
+                            <input type="password" name = 'password1' class="form-control mt-3 mb-3" placeholder="Password"/>
+                            <input type="password" name = 'password2' class="form-control mt-3 mb-3" placeholder="Confirm Password "/>
+                        </div>
+                        <div class="form-group form-check">
+</div>
+                        <button type="submit" class="btn btn-primary float-right bg-info border-light">Submit</button>
+                    </form>
+                     <p class="mb-3 pb-3 text-muted text-center">
+                                        already have an account ? <a href="#" class="alert-link">Sign in</a></p>
+                </div>
+            </div>
+        </div>
+{% endblock content %}
+
+

@@ -1,0 +1,35 @@
+
+body { 
+    background-color: #FFAEDC; 
+    color: white; 
+    background-image: url("../assets/img/noucamp.jpg");
+    background-repeat: none;
+    background-size: cover;
+    opacity: 0.9; 
+} 
+
+body nav { 
+    background-color: #4FFBDF;
+    color: white; 
+}
+ 
+div .jumbotron { 
+    background-color: #33345A; 
+    margin-top: 1em; color: white; 
+} 
+
+div .jumbotron h3 {
+    margin-bottom: 1em; 
+    padding: 0.4em; 
+    margin-top: -1em; 
+} 
+
+div .alert { 
+    font-size: 1.2em; 
+    margin: 0PX; 
+    margin-bottom: .6em; 
+} 
+
+div .jumbotron { 
+    margin-top: 3em;
+}

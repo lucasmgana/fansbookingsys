@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block stylesheet %}
+<link href="{% static 'css/ticket.css' %}" rel="stylesheet">
+{% endblock stylesheet %}
+
+{% block content %}
+{% include 'navbar.html' %}
+<center class="p-5 m-5">
+<div class="col-md-3 shadow-sm bg-light" style="border-radius: 4px;">
+        <form method="POST">
+          {% csrf_token %}
+            <h1 class="h3 mb-3 text-info font-weight-normal py-5 mt-2">Please sign in</h1>
+
+            <label for="inputEmail" class="sr-only">Username</label>
+            <input type="email" id="inputEmail" name="{{form.username.html_name}}" class="form-control bg-white shadow-sm mb-2 border border-light border-0" required autofocus placeholder="Username">
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" name="{{form.password.name}}" id="inputPassword" class="form-control border border-0 border-light mt-1 shadow-sm bg-white" placeholder="Password" required>
+            <div class="checkbox mb-3">
+</div>
+            <button class="btn btn-lg btn-block btn-info mt-4" type="submit" data-pg-ia='{"l":[{"trg":"mouseenter","t":"this","a":"bounce"}]}'>Sign in</button>
+        </form>
+        <p class="mt-5 mb-3 pb-3 text-muted text-center">
+                                    don`t have an account ? <a href="{% url 'loginapp:register' %}" class="alert-link">Sign up</a></p>
+    </div>
+
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+        <script src="{% static 'assets/js/popper.js' %}"></script>
+        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+</center>
+{% endblock content %}

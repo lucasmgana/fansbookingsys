@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block stylesheet %}
+<link href="{% static 'css/ticket.css' %}" rel="stylesheet">
+{% endblock stylesheet %}
+
+{% block content %}
+{% include 'navbar.html' %}
+        <div class="container">
+            <form action="{% url 'loginapp:payment' match.pk %}" method="post">
+                {% csrf_token %}
+            <div class="jumbotron shadow-sm mt-5">
+                <h2 class="text-center display-4" data-pg-ia='{"l":[{"trg":"mouseenter","a":"bounceIn"}]}'>{{match.home_team}}<br/> Vs<br/>{{match.away_team}}</h2>
+                <p class="lead text-center p-1">Stadium : {{match.stadium}}</p>
+                <table class="table text-white text-center"> 
+                    <thead> 
+                        <tr> 
+                            <th>Date & Day</th> 
+                            <th>Amount</th> 
+                            <th>Status</th> 
+                        </tr>                         
+                    </thead>                     
+                    <tbody> 
+                        <tr> 
+                            <th scope="row">{{match.date}}</th> 
+                            <!-- price field -->
+                            <td name="price" id="price"></td> 
+                            <td>
+                                <select required name="price" onchange="pricechanger()" class="custom-select border border-light border-0" id="inlineFormCustomSelect" style="background-color: #007789; color: white;">
+                                    <option value="" selected="">Choose Status</option>
+                                    {% for ent in match.matchentrace_set.all %}
+                                    <option value="{{ent.vip_price}}">VIP</option>
+                                    <option value="{{ent.platnum_price}}">PLATNUM</option>
+                                    <option value="{{ent.mzunguko_price}}">MZUNGUKO</option>
+                                    {% endfor %}
+                                </select>
+                            </td>                             
+                        </tr>                         
+                    </tbody>                     
+                </table>
+                <hr class="my-4"/>
+                
+                {% if messages %}                
+                {% for message in messages %}
+                <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <strong>{{message}}</strong>
+                </div>
+
+                {% endfor %}
+                        
+                {% endif %}
+                
+                <p>Paid By: <span class="text-white text-capitalize font-weight-bold"> {{request.user.email}}</span> </p>
+                    
+                {% if request.user.is_authenticated %}
+                <button class="btn btn-lg btn-info float-right shadow-sm border border-0 border-light" type="submit" role="button" data-pg-ia='{"l":[{"trg":"click","t":"this","a":"bounce"}]}'>Pay your ticket</button>
+                {% else %}
+                <a href="{% url 'login' %}" class="btn btn-lg btn-danger float-right shadow-sm border border-0 border-light" type="submit" role="button" data-pg-ia='{"l":[{"trg":"click","t":"this","a":"bounce"}]}'>Login to pay</a>
+                {% endif %}
+                    
+            </div>
+
+        </form>
+        </div>
+        <!-- Bootstrap core JavaScript
+    ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <nav aria-label="breadcrumb">
+</nav>
+
+<script>
+    function pricechanger() {
+        document.getElementById('price').innerHTML= document.getElementById('inlineFormCustomSelect').value;
+    }
+</script>
+
+{% endblock content %}
