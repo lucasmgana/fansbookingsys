@@ -55,11 +55,12 @@
                         
                 {% endif %}
                 
-                <p>Paid By: <span class="text-white text-capitalize font-weight-bold"> {{request.user.email}}</span> </p>
-                    
+                
                 {% if request.user.is_authenticated %}
+                <p>Paid By: <span class="text-white text-capitalize font-weight-bold"> {{request.user.fanprofile.full_name}}</span> </p>
                 <button class="btn btn-lg btn-info float-right shadow-sm border border-0 border-light" type="submit" role="button" data-pg-ia='{"l":[{"trg":"click","t":"this","a":"bounce"}]}'>Pay your ticket</button>
                 {% else %}
+                <p><span class="text-danger text-capitalize font-weight-bold">Guest</span> can't pay for ticket </p>
                 <a href="{% url 'login' %}" class="btn btn-lg btn-danger float-right shadow-sm border border-0 border-light" type="submit" role="button" data-pg-ia='{"l":[{"trg":"click","t":"this","a":"bounce"}]}'>Login to pay</a>
                 {% endif %}
                     

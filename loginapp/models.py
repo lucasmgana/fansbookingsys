@@ -158,7 +158,7 @@ class Ticket(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     ticket_number = models.CharField(max_length=255)
     amount = models.PositiveIntegerField(null=True, blank=True)
-    match = models.OneToOneField(Match, on_delete=models.CASCADE, null=True, blank=True)
+    match = models.ForeignKey(Match, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return str(self.ticket_number) + " done by " + str(self.user)

@@ -30,52 +30,70 @@ def payment(request, pk):
                     request, 'Can\'t book twice, either print your ticket! one ticket per match'
                     )
             ticket = None
-                    
-        else:
-            ticket = Ticket.objects.create(
-                user = user,
-                ticket_number = token,
-                match = match,
-                amount = amount
-            )
+            return render(request, template_name, context)
 
-            ticket.save()
+        else:        
+            try:
+                ticket = Ticket.objects.create(
+                    user = user,
+                    ticket_number = token,
+                    match = match,
+                    amount = amount
+                )
+
+                ticket.save()
+            
+            except:
+                messages.error(
+                        request, 'only one ticket per match'
+                        )
+                return render(request, template_name, context)
             
 
         if ticket:
-            # Instatiate API context
-            m_pesa = MPESA(api_key, public_key)
-            desc = str("form ticket " + str(token))
+            try:
+                # Instatiate API context
+                m_pesa = MPESA(api_key, public_key)
 
-            # Constructing parameters 
-            parameters = {
-                'input_Amount': amount,
-                'input_Country': 'TZN',
-                'input_Currency': 'TZS',
-                'input_CustomerMSISDN': '000000000001',
-                'input_ServiceProviderCode': '000000',
-                'input_ThirdPartyConversationID': get_random_string(18),
-                'input_TransactionReference': token,
-                'input_PurchasedItemsDesc': desc,
-            }
-            
-            # make an API call
-            results = m_pesa.customer2business(parameters)
+                if m_pesa:    
+                    desc = str("form ticket " + str(token))
 
-            # processing results from API call
-            if results.body['output_ResponseCode'] == 'INS-0':
-                Payment.objects.create(user=user, ticket = ticket, amount=amount)
-                # Payment.save()
+                    # Constructing parameters 
+                    parameters = {
+                        'input_Amount': amount,
+                        'input_Country': 'TZN',
+                        'input_Currency': 'TZS',
+                        'input_CustomerMSISDN': '000000000001',
+                        'input_ServiceProviderCode': '000000',
+                        'input_ThirdPartyConversationID': get_random_string(18),
+                        'input_TransactionReference': token,
+                        'input_PurchasedItemsDesc': desc,
+                    }
+                    
+                    # make an API call
+                    results = m_pesa.customer2business(parameters)
 
-                messages.success(
-                    request, 'Your Payment was Successfully sent!')
-                return redirect('loginapp:tickets', pk=user.id)
+                    # processing results from API call
+                    if results.body['output_ResponseCode'] == 'INS-0':
+                        Payment.objects.create(user=user, ticket = ticket, amount=amount)
+                        # Payment.save()
 
-            else:
-                messages.error(request, results.body['output_ResponseDesc'])
-            
+                        messages.success(
+                            request, 'Your Payment was Successfully sent!')
+                        return redirect('loginapp:tickets', pk=user.id)
+
+                    else:
+                        messages.error(request, results.body['output_ResponseDesc'])
+                        messages.error(
+                                request, 'whuuh!!! Your Payment was Unsuccessfull!!!')
+                
+                else:
+                    messages.error(
+                                request, 'whuuh!!! Your Payment was Unsuccessfull!!!, Check your internet connections')
+
+            except:
                 messages.error(
-                        request, 'whuuh!!! Your Payment was Unsuccessfull!!!')
+                                request, 'whuuh!!! Your Payment was Unsuccessfull!!!, Check your internet connections')
 
             return render(request, template_name, context)
                 
