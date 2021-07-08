@@ -1,0 +1,4 @@
+req.txt
+__pycache__/
+kaz01/
+*pyc
