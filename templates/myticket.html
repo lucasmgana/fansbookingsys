@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block stylesheet %}
+<link href="{% static 'css/ticket.css' %}" rel="stylesheet">
+{% endblock stylesheet %}
+
+{% block content %}
+
+        <div class="container">
+            
+            <div class="jumbotron shadow-sm mt-5">
+                <center>
+                    <h1 class="text-center display-1" data-pg-ia='{"l":[{"trg":"mouseenter","a":"bounceIn"}]}'>{{home}}  Vs {{away}}</h1>
+             
+                </center>
+                <table class="table"> 
+                        <tr> 
+                            <td><h2>Customer : {{customer.fanprofile.full_name}}</h2></td> 
+                            <td><h2>Stadium : {{stadium}}</h2></td> 
+                            <td><h1> Ticket Class : {{status}}</h1></td>                             
+                        </tr> 
+                    </table>
+                    <hr class="my-2">
+                    <table class="table">
+                        <tr> 
+                            <td>Date: {{date}}</td> 
+                            <td>Amount: {{amount}}</td> 
+                            <td>Status: {{amount}}</td> 
+                        </tr>                    
+                </table>
+                <br><br>
+                <center>
+                    ****************************************
+                    
+                    {% if pay_stat %}
+                    PAID  -  token <b>{{token}}</b>
+                    {% else %}
+                    NOT PAID
+                    {% endif %}
+                        
+                    ****************************************
+                </center>
+            </div>
+
+        </form>
+        </div>
+        <!-- Bootstrap core JavaScript
+    ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <nav aria-label="breadcrumb">
+</nav>
+
+<script>
+    function pricechanger() {
+        document.getElementById('price').innerHTML= document.getElementById('inlineFormCustomSelect').value;
+    }
+</script>
+
+{% endblock content %}

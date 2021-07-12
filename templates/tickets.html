@@ -12,42 +12,13 @@
     <div class="jumbotron shadow-sm mt-5 text-white">
         <h3 class="d-flex justify-content-between align-items-center">
 Tickets<span class="badge badge-success badge-pill">{{total_tickets}}</span> </h3>
-        <div class="alert alert-success text-center border border-0 border-light" role="alert">
-          Hi {{request.user.fanprofile.full_name}}!! {% if matchs %} These are your ticket(s)
+
+<div class="alert alert-success text-center border border-0 border-light" role="alert">
+    Hi {{request.user.fanprofile.full_name}}!! {% if matchs %} These are your ticket(s)
 
 </div>
-        <table class="table w-100 text-white"> 
-            <thead> 
-                <tr> 
-                    <th>S/N</th> 
-                    <th>Match</th> 
-                    <th>Stadium</th> 
-                    <th>Entrace</th> 
-                    <th>DateTime</th> 
-                    <th>Token</th> 
-                </tr>                         
-            </thead>                     
-            <tbody>
-                {% for match in matchs %} 
-                <tr> 
-                    <th scope="row">{{match.id}}</th> 
-                    <td>{{match.match.home_team}} Vs {{match.match.away_team}}</td> 
-                    <td>{{match.match.stadium}}</td> 
-                    <td>{{match.amount}}</td>                           
-                    <td>{{match.date}}</td>                           
-                    <td>{{match.ticket_number}}</td>                           
-                </tr> 
-                
-                {% endfor %}
-                                      
-            </tbody>                     
-        </table>
-                        
-                  {% else %}
-                  have no tickets yet!! <a href="{% url 'loginapp:home' %}">Book here</a>
-                {% endif %}
-    </div>
-    {% if messages %}                
+
+{% if messages %}                
     {% for message in messages %}
     <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -59,6 +30,64 @@ Tickets<span class="badge badge-success badge-pill">{{total_tickets}}</span> </h
 
     {% endfor %}   
             {% endif %}
+
+
+        <table class="table w-100 text-white"> 
+            <thead> 
+                <tr> 
+                    <th>S/N</th> 
+                    <th>Match</th> 
+                    <th>Stadium</th> 
+                    <th>Entrace</th> 
+                    <th>Date</th> 
+
+                    <th>Status</th> 
+                    
+                    <th>Token</th> 
+                    <th>Action</th> 
+                </tr>                         
+            </thead>                     
+            <tbody>
+                {% for match in matchs %} 
+                <tr> 
+                    <th scope="row">{{forloop.counter}}</th> 
+                    <td>{{match.match.home_team}} Vs {{match.match.away_team}}</td> 
+                    <td>{{match.match.stadium}}</td> 
+                    <td>{{match.amount}}</td>                           
+                    <td>{{match.date}}</td> 
+
+                    {% if match.payed %}
+                    <td  class="badge badge-success  mx-1 px-2">
+                    Payed
+                    {% else %}
+                    <td  class="badge badge-danger  mx-1 px-2">
+                    Not Payed
+                    {% endif %}
+                    </td>  
+
+                    <td>{{match.ticket_number}}</td>
+                      
+                    {% if match.payed %}                    
+                    <td><a class="badge badge-primary mx-1 px-2" href="{% url 'loginapp:ticket_view' request.user.pk match.ticket_number %}">view</a><a class="badge badge-success mx-1 px-2" href="{% url 'loginapp:ticket_download' request.user.pk match.ticket_number %}">download</a></td>                           
+                    {% else %}
+                    <form action="{% url 'loginapp:repay' match.id %}" method="post">
+                        {% csrf_token %}
+                    <td><button type="submit" class="badge badge-warning mx-1 px-2" href="{% url 'loginapp:repay' match.id %}">Pay</button></td>                           
+                    </form>     
+                    {% endif %}
+
+                </tr> 
+                
+                {% endfor %}
+                                      
+            </tbody>                     
+        </table>
+                        
+                  {% else %}
+                  have no tickets yet!! <a href="{% url 'loginapp:home' %}">Book here</a>
+                {% endif %}
+    </div>
+    
 </div>
 
 
