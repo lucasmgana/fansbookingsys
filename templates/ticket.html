@@ -11,7 +11,10 @@
             <form action="{% url 'loginapp:payment' match.pk %}" method="post">
                 {% csrf_token %}
             <div class="jumbotron shadow-sm mt-5">
-                <h2 class="text-center display-4" data-pg-ia='{"l":[{"trg":"mouseenter","a":"bounceIn"}]}'>{{match.home_team}}<br/> Vs<br/>{{match.away_team}}</h2>
+                <h2 class="text-center" data-pg-ia='{"l":[{"trg":"mouseenter","a":"bounceIn"}]}'>
+                    <img width="100" style="border-radius: 50%;" src="../../uswazi/media/QQ.jpg" alt="home"> {{match.home_team}} 
+                    Vs 
+                    <img width="50" style="border-radius: 50%;" src="../static/assets/img/bridge.jpg" alt="away"> {{match.away_team}}</h2>
                 <p class="lead text-center p-1">Stadium : {{match.stadium}}</p>
                 <table class="table text-white text-center"> 
                     <thead> 
@@ -55,10 +58,26 @@
                         
                 {% endif %}
                 
-                
+
+
+
                 {% if request.user.is_authenticated %}
+
+                <div class="dropup" id='cont'>
+                    <a role="button" type='button' data-pg-ia='{"l":[{"trg":"click","t":"this","a":"bounce"}]}' class="btn btn-sm btn-warning float-right mr-5 shadow-sm dropdown-toggle" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                                Pay Ticket
+                    </a>
+                    <ul id="potea" class="dropdown-menu" aria-labelledby="triggerId">
+                        <h6 class="dropdown-header">Choose Method</h6>
+                        <div class="dropdown-divider"></div>
+                        <li onclick="mpesa()" class="dropdown-item">Mpesa</li>
+                        <li class="dropdown-item" href="#">Tigopesa</li>
+                        <li class="dropdown-item" href="#">Halopesa</li>
+                    </ul>
+                </div>
                 <p>Paid By: <span class="text-white text-capitalize font-weight-bold"> {{request.user.fanprofile.full_name}}</span> </p>
-                <button class="btn btn-lg btn-info float-right shadow-sm border border-0 border-light" type="submit" role="button" data-pg-ia='{"l":[{"trg":"click","t":"this","a":"bounce"}]}'>Pay your ticket</button>
+                
                 {% else %}
                 <p><span class="text-danger text-capitalize font-weight-bold">Guest</span> can't pay for ticket </p>
                 <a href="{% url 'login' %}" class="btn btn-lg btn-danger float-right shadow-sm border border-0 border-light" type="submit" role="button" data-pg-ia='{"l":[{"trg":"click","t":"this","a":"bounce"}]}'>Login to pay</a>
@@ -68,13 +87,40 @@
 
         </form>
         </div>
-        <!-- Bootstrap core JavaScript
-    ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <nav aria-label="breadcrumb">
-</nav>
+
 
 <script>
+    function mpesa(){
+        var home = "{{match.home_team}}";
+        var away = "{{match.away_team}}";
+        var my_price = document.getElementById('price').innerHTML;
+        if (my_price){
+            var mpesa_number = Number(prompt('Enter Mpesa funded number to make payement\n'))
+            if (mpesa_number && typeof mpesa_number == 'number'){
+                var mpesa_pin = prompt('You are about to pay ' + my_price + '\n'+
+                                    'from '+ mpesa_number +' to FANS TICKETING SYSTEM for \n' 
+                                    + home+' vs ' + away + ' match ticket, \n\n'+
+                                    'Enter PIN to confirm') 
+                if (mpesa_pin == '1234'){
+                    done = confirm('confirm payments?');
+                    if (done){
+                        var container = document.getElementById('cont');
+                        var btnn = document.getElementById('triggerId');
+                        document.getElementById('potea').hidden = true;
+                        btnn.outerHTML = '<button type="submit" data-pg-ia=\'{"l":[{"trg":"click","t":"this","a":"bounce"}]}\' class="btn btn-sm btn-success float-right mr-5 shadow-sm">GO</button>';
+                    }
+
+                    } else {
+                        alert('Wrong password, try again...')
+                    }
+                } else {
+                    alert('enter valid mpesa number')
+                }
+            } else {
+                alert('choose status first')
+            }
+        };
+
     function pricechanger() {
         document.getElementById('price').innerHTML= document.getElementById('inlineFormCustomSelect').value;
     }

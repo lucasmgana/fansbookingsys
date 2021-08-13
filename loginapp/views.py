@@ -34,11 +34,14 @@ def register(req):
 
         if form.is_valid():
             user = form.save()
+            fan = FanProfile.objects.get(user=user)
             club = req.POST.get('clubs')
             club = Club.objects.get(name=club)
 
             full_name = req.POST.get('fname') + " " + req.POST.get('lname')
-            FanProfile.objects.create(user=user, full_name=full_name, club=club)
+            fan.full_name = full_name
+            fan.club = club
+            fan.save()
             return redirect('login')
         return render(req, 'registration/register.html', context)
     else:

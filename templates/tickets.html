@@ -53,7 +53,7 @@ Tickets<span class="badge badge-success badge-pill">{{total_tickets}}</span> </h
                     <th scope="row">{{forloop.counter}}</th> 
                     <td>{{match.match.home_team}} Vs {{match.match.away_team}}</td> 
                     <td>{{match.match.stadium}}</td> 
-                    <td>{{match.amount}}</td>                           
+                    <td id='price'>{{match.amount}}</td>                           
                     <td>{{match.date}}</td> 
 
                     {% if match.payed %}
@@ -72,7 +72,25 @@ Tickets<span class="badge badge-success badge-pill">{{total_tickets}}</span> </h
                     {% else %}
                     <form action="{% url 'loginapp:repay' match.id %}" method="post">
                         {% csrf_token %}
-                    <td><button type="submit" class="badge badge-warning mx-1 px-2" href="{% url 'loginapp:repay' match.id %}">Pay</button></td>                           
+                    <td>
+                    
+                    
+                        <div class="dropup" id='cont'>
+                            <a role="button" type='button' data-pg-ia='{"l":[{"trg":"click","t":"this","a":"bounce"}]}' class="btn btn-sm btn-warning float-right mr-5 shadow-sm dropdown-toggle" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                        Pay Ticket
+                            </a>
+                            <ul id="potea" class="dropdown-menu" aria-labelledby="triggerId">
+                                <h6 class="dropdown-header">Choose Method</h6>
+                                <div class="dropdown-divider"></div>
+                                <li onclick="mpesa()" class="dropdown-item">Mpesa</li>
+                                <li class="dropdown-item" href="#">Tigopesa</li>
+                                <li class="dropdown-item" href="#">Halopesa</li>
+                            </ul>
+                        </div>
+                    
+                    
+                    </td>                           
                     </form>     
                     {% endif %}
 
@@ -90,5 +108,41 @@ Tickets<span class="badge badge-success badge-pill">{{total_tickets}}</span> </h
     
 </div>
 
+<script>
+    function mpesa(){
+        var home = "{{match.match.home_team}}";
+        var away = "{{match.match.away_team}}";
+        var my_price = document.getElementById('price').innerHTML;
+        if (my_price){
+            var mpesa_number = Number(prompt('Enter Mpesa funded number to make payement\n'))
+            if (mpesa_number && typeof mpesa_number == 'number'){
+                var mpesa_pin = prompt('You are about to pay ' + my_price + '\n'+
+                                    'from '+ mpesa_number +' to FANS TICKETING SYSTEM for \n' 
+                                    + home+' vs ' + away + ' match ticket, \n\n'+
+                                    'Enter PIN to confirm') 
+                if (mpesa_pin == '1234'){
+                    done = confirm('confirm payments?');
+                    if (done){
+                        var container = document.getElementById('cont');
+                        var btnn = document.getElementById('triggerId');
+                        document.getElementById('potea').hidden = true;
+                        btnn.outerHTML = '<button type=\'submit\'>GO</button>';
+                    }
+
+                    } else {
+                        alert('Wrong password, try again...')
+                    }
+                } else {
+                    alert('enter valid mpesa number')
+                }
+            } else {
+                alert('choose status first')
+            }
+        };
+
+    function pricechanger() {
+        document.getElementById('price').innerHTML= document.getElementById('inlineFormCustomSelect').value;
+    }
+</script>
 
 {% endblock content %}

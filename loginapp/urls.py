@@ -16,7 +16,7 @@ urlpatterns = [
     path('tickets/<int:pk>/', ListTicketView.as_view(), name = 'tickets'),
 
     path('payment/<int:pk>/', payment.payment, name = 'payment'),
-    path('/<int:pk>/', payment.repay, name = 'repay'),
+    path('<int:pk>/', payment.repay, name = 'repay'),
     path('successfully/', SuccessfullyView.as_view(), name = 'successfully'),
 
     # path('', index),

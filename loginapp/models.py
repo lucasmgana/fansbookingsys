@@ -53,7 +53,6 @@ class User(AbstractBaseUser):
         unique=True,
     )
 
-
     active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False)  # a admin user; non super-user
     admin = models.BooleanField(default=False)  # a superuser
@@ -104,10 +103,19 @@ class User(AbstractBaseUser):
 class Club(models.Model):
     name = models.CharField(max_length=244)
     location = models.CharField(max_length=244)
-    fans_no = models.PositiveIntegerField()
-
     def __str__(self):
         return self.name
+
+    
+    @property
+    def get_total_fans(self):
+        if not self.fanprofile.is_staff:
+            return self.fanprofile_set.all().count()
+    
+    @property
+    def get_total_staff(self):
+        if self.fanprofile.is_staff:
+            return self.fanprofile_set.all().count()
 
 
 FAN_STATUS = (
@@ -119,17 +127,11 @@ FAN_STATUS = (
 class FanProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     full_name = models.CharField(max_length=255)
-    club = models.ForeignKey(Club, on_delete=models.CASCADE, blank=True, null=True)
-    status = models.CharField(max_length=255, null=True, choices=FAN_STATUS)
+    club = models.ForeignKey('Club', on_delete=models.CASCADE, blank=True, null=True)
+    status = models.CharField(max_length=255, null=True, choices=FAN_STATUS, default=FAN_STATUS[0])
 
     def __str__(self):
         return str(self.user)
-
-    def save(self, *args, **kwargs):
-        club = Club.objects.get(name=self.club)
-        club.fans_no += 1
-        club.save()
-        return super().save(*args, **kwargs)
 
 
 class Match(models.Model):
