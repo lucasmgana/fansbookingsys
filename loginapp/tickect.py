@@ -16,16 +16,16 @@ def render_to_pdf(template_src, context_dict={}):
 
 
 data = {
-	"company": "Dennnis Ivanov Company",
-	"address": "123 Street name",
-	"city": "Vancouver",
-	"state": "WA",
-	"zipcode": "98663",
+	"company": "Adelina Mgana",
+	"address": "kichangani",
+	"city": "Moro",
+	"state": "TZ",
+	"zipcode": "67112",
 
 
-	"phone": "555-555-2345",
-	"email": "youremail@dennisivy.com",
-	"website": "dennisivy.com",
+	"phone": "0655-555-2345",
+	"email": "adela@mgana.com",
+	"website": "adelina.com",
 	}
 
 #Opens up page as PDF
